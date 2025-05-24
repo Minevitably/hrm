@@ -1,4 +1,4 @@
-package site.opencs.plotmax.hrm.system.controller;
+package site.opencs.plotmax.hrm.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.stereotype.Controller;

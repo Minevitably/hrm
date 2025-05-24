@@ -1,14 +1,13 @@
-package site.opencs.plotmax.hrm.system.service.impl;
+package site.opencs.plotmax.hrm.service.impl;
 
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-import site.opencs.plotmax.hrm.system.entity.User;
-import site.opencs.plotmax.hrm.system.mapper.UserMapper;
+import site.opencs.plotmax.hrm.entity.User;
+import site.opencs.plotmax.hrm.mapper.UserMapper;
 
 import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class UserDetailsServiceImpl implements UserDetailsService {

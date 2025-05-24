@@ -1,7 +1,7 @@
-package site.opencs.plotmax.hrm.system.mapper;
+package site.opencs.plotmax.hrm.mapper;
 
 import org.apache.ibatis.annotations.Select;
-import site.opencs.plotmax.hrm.system.entity.User;
+import site.opencs.plotmax.hrm.entity.User;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 import java.util.List;

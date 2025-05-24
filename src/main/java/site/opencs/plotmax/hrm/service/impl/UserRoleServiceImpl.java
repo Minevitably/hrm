@@ -1,8 +1,8 @@
-package site.opencs.plotmax.hrm.system.service.impl;
+package site.opencs.plotmax.hrm.service.impl;
 
-import site.opencs.plotmax.hrm.system.entity.UserRole;
-import site.opencs.plotmax.hrm.system.mapper.UserRoleMapper;
-import site.opencs.plotmax.hrm.system.service.IUserRoleService;
+import site.opencs.plotmax.hrm.entity.UserRole;
+import site.opencs.plotmax.hrm.mapper.UserRoleMapper;
+import site.opencs.plotmax.hrm.service.IUserRoleService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
 

@@ -1,6 +1,6 @@
-package site.opencs.plotmax.hrm.system.mapper;
+package site.opencs.plotmax.hrm.mapper;
 
-import site.opencs.plotmax.hrm.system.entity.UserRole;
+import site.opencs.plotmax.hrm.entity.UserRole;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**

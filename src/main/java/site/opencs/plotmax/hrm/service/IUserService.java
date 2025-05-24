@@ -1,6 +1,6 @@
-package site.opencs.plotmax.hrm.system.service;
+package site.opencs.plotmax.hrm.service;
 
-import site.opencs.plotmax.hrm.system.entity.User;
+import site.opencs.plotmax.hrm.entity.User;
 import com.baomidou.mybatisplus.extension.service.IService;
 
 /**
