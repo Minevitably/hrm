@@ -1,12 +1,16 @@
 package site.opencs.plotmax.hrm.system.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
 import java.time.LocalDateTime;
+import java.util.List;
+
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
+import lombok.Data;
 
 /**
  * <p>
@@ -16,6 +20,7 @@ import io.swagger.annotations.ApiModelProperty;
  * @author plotmax
  * @since 2025-05-23
  */
+@Data
 @TableName("sys_user")
 @ApiModel(value = "User对象", description = "系统用户表")
 public class User implements Serializable {
@@ -53,6 +58,8 @@ public class User implements Serializable {
     @ApiModelProperty("逻辑删除：0-未删除，1-已删除")
     private Byte deleted;
 
+    @TableField(exist = false) // 表示不是数据库字段
+    private List<String> roles;
     public Long getId() {
         return id;
     }

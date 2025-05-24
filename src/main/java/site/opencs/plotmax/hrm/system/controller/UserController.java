@@ -12,7 +12,7 @@ import org.springframework.stereotype.Controller;
  * @since 2025-05-23
  */
 @Controller
-@RequestMapping("/system/user")
+@RequestMapping("/api/user")
 public class UserController {
 
 }

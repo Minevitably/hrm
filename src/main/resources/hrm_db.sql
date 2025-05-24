@@ -43,12 +43,12 @@ CREATE TABLE `sys_user_role` (
 
 -- 插入初始数据
 INSERT INTO `sys_role` (`role_name`, `role_code`, `description`) VALUES
-                                                                     ('管理员', 'ROLE_ADMIN', '系统管理员'),
-                                                                     ('普通用户', 'ROLE_USER', '普通用户');
+                                                                     ('管理员', 'ADMIN', '系统管理员'),
+                                                                     ('普通用户', 'USER', '普通用户');
 
 INSERT INTO `sys_user` (`username`, `password`, `real_name`, `email`, `phone`, `status`) VALUES
-                                                                                             ('admin', '$2a$10$ixJNQ8QzU.9Jv5p5J9lY.ez5VZJQ9XZJQ9XZJQ9XZJQ9XZJQ9XZJQ9', '系统管理员', 'admin@example.com', '13800138000', 1),
-                                                                                             ('user', '$2a$10$ixJNQ8QzU.9Jv5p5J9lY.ez5VZJQ9XZJQ9XZJQ9XZJQ9XZJQ9XZJQ9', '普通用户', 'user@example.com', '13900139000', 1);
+                                                                                             ('admin', '$2a$10$bDW2hs7KSe6lZI1ITGEeTeHXWKojoWuxDag/F//m0srDTG/QpGIAi', '系统管理员', 'admin@example.com', '13800138000', 1),
+                                                                                             ('user', '$2a$10$bDW2hs7KSe6lZI1ITGEeTeHXWKojoWuxDag/F//m0srDTG/QpGIAi', '普通用户', 'user@example.com', '13900139000', 1);
 
 INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES
                                                        (1, 1),  -- admin用户拥有管理员角色
