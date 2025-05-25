@@ -208,6 +208,11 @@ CREATE TABLE `sys_user_role`
 ) ENGINE = InnoDB
   DEFAULT CHARSET = utf8mb4 COMMENT ='用户角色关联表';
 
+-- 初始化审批测试数据
+INSERT INTO sys_approval (employee_id, type, status, start_time, end_time, duration, reason, create_time)
+VALUES (1001, 'LEAVE', 'PENDING', '2023-08-01 09:00:00', '2023-08-03 18:00:00', 24.0, '年假休息', NOW()),
+       (1002, 'OVERTIME', 'APPROVED', '2023-08-05 19:00:00', '2023-08-05 22:00:00', 3.0, '项目紧急上线', NOW()),
+       (1003, 'LEAVE', 'REJECTED', '2023-08-10 13:00:00', '2023-08-10 17:00:00', 4.0, '家中有事', NOW());
 
 -- 初始化部门数据
 INSERT INTO `sys_department` (`id`, `name`, `parent_id`)

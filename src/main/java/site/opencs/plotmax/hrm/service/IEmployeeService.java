@@ -17,6 +17,12 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface IEmployeeService extends IService<Employee> {
 
+    /**
+     * 获取当前登录的用户对应的员工id
+     * @return
+     */
+    Long getCurrentId();
+
     Page<EmployeeResponse> listEmployees(String department, String group, int page, int size);
 
     EmployeeResponse getEmployeeDetail(Long id);

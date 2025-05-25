@@ -3,15 +3,22 @@ package site.opencs.plotmax.hrm.service.impl;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 import site.opencs.plotmax.hrm.dto.request.EmployeeRequest;
 import site.opencs.plotmax.hrm.dto.response.EmployeeResponse;
 import site.opencs.plotmax.hrm.entity.Employee;
+import site.opencs.plotmax.hrm.entity.User;
+import site.opencs.plotmax.hrm.exception.AuthException;
+import site.opencs.plotmax.hrm.exception.BusinessException;
+import site.opencs.plotmax.hrm.exception.ErrorCode;
 import site.opencs.plotmax.hrm.mapper.EmployeeMapper;
 import site.opencs.plotmax.hrm.service.IEmployeeService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.stereotype.Service;
+import site.opencs.plotmax.hrm.service.IUserService;
+import site.opencs.plotmax.hrm.util.SecurityUtil;
 
 import java.time.LocalDate;
 
@@ -29,6 +36,25 @@ public class EmployeeServiceImpl extends ServiceImpl<EmployeeMapper, Employee> i
     @Autowired
     private EmployeeMapper employeeMapper;
 
+    @Autowired
+    private IUserService userService;
+
+    @Override
+    public Long getCurrentId() {
+        // 从安全上下文中获取当前用户ID
+        String username = SecurityUtil.getCurrentUsername().orElse(null); // 如果Optional为空，则返回null
+        if (username == null) {
+            // 处理用户未登录或无法获取用户名的情况
+            throw new AuthException("用户未登录或无法获取用户名", ErrorCode.UNAUTHORIZED);
+        }
+        User user = userService.selectByUsername(username);
+        Long currentUserId = user.getEmployeeId();
+        if (currentUserId == null) {
+            // 处理用户未与员工绑定的情况
+            throw new BusinessException("用户未与员工绑定");
+        }
+        return currentUserId;
+    }
     @Override
     public Page<EmployeeResponse> listEmployees(String department, String group, int page, int size) {
         Page<EmployeeResponse> pageParam = new Page<>(page, size);
