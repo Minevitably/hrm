@@ -31,6 +31,11 @@
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.3.1</version>
         </dependency>
+<!--        Jackson 默认 不支持 Java 8 的时间类型（如 Instant、LocalDateTime）的序列化，需要注册模块-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+        </dependency>
 
         <!-- Spring Security -->
         <dependency>

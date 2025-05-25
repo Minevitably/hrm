@@ -19,6 +19,8 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import site.opencs.plotmax.hrm.config.security.JwtAccessFilter;
 import site.opencs.plotmax.hrm.config.security.SecurityProps;
+import site.opencs.plotmax.hrm.exception.CustomAccessDeniedHandler;
+import site.opencs.plotmax.hrm.exception.CustomAuthenticationEntryPoint;
 import site.opencs.plotmax.hrm.util.JwtUtil;
 
 @Configuration
@@ -32,7 +34,8 @@ public class SecurityConfig {
     private final UserDetailsService userDetailsService;
     private final JwtUtil jwtUtil;
     private final ObjectMapper objectMapper;
-
+    private final CustomAccessDeniedHandler accessDeniedHandler;
+    private final CustomAuthenticationEntryPoint authenticationEntryPoint;
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
@@ -44,6 +47,9 @@ public class SecurityConfig {
                         .antMatchers(securityProps.getPermitAllEndpoints().toArray(new String[0])).permitAll()
                         .anyRequest().authenticated()
                 )
+                .exceptionHandling(ex->ex
+                        .authenticationEntryPoint(authenticationEntryPoint)
+                        .accessDeniedHandler(accessDeniedHandler))
                 .addFilterBefore(jwtAccessFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();

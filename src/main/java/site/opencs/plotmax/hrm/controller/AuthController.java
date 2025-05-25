@@ -28,8 +28,8 @@ public class AuthController {
     @PostMapping("/login")
     @Operation(summary = "用户登录")
     public ApiResponse<AuthResponse> login(@Valid @RequestBody LoginRequest request) {
-        log.warn("/api/auth/login LoginRequest:");
-        log.warn(request.toString());
+        log.debug("/api/auth/login LoginRequest:");
+        log.debug(request.toString());
         return ApiResponse.success(authService.authenticate(request));
     }
 
