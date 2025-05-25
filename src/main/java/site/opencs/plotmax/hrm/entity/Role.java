@@ -12,7 +12,7 @@ import lombok.Setter;
 
 /**
  * <p>
- * 系统角色表
+ * 角色表
  * </p>
  *
  * @author plotmax
@@ -21,12 +21,11 @@ import lombok.Setter;
 @Getter
 @Setter
 @TableName("sys_role")
-@ApiModel(value = "Role对象", description = "系统角色表")
+@ApiModel(value = "Role对象", description = "角色表")
 public class Role implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("主键ID")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -39,12 +38,5 @@ public class Role implements Serializable {
     @ApiModelProperty("描述")
     private String description;
 
-    @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
-
-    @ApiModelProperty("更新时间")
-    private LocalDateTime updateTime;
-
-    @ApiModelProperty("逻辑删除：0-未删除，1-已删除")
-    private Byte deleted;
 }

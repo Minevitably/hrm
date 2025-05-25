@@ -29,7 +29,6 @@ public class User implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("主键ID")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -39,26 +38,27 @@ public class User implements Serializable {
     @ApiModelProperty("密码")
     private String password;
 
-    @ApiModelProperty("真实姓名")
-    private String realName;
+    @ApiModelProperty("关联员工ID")
+    private Long employeeId;
 
-    @ApiModelProperty("邮箱")
-    private String email;
+    @ApiModelProperty("最后登录时间")
+    private LocalDateTime lastLoginTime;
 
-    @ApiModelProperty("手机号")
-    private String phone;
+    @ApiModelProperty("连续登录失败次数")
+    private Integer loginFailCount;
 
-    @ApiModelProperty("状态：1-正常，0-禁用")
+    @ApiModelProperty("是否锁定(1:是 0:否)")
+    private Byte accountLocked;
+
+    @ApiModelProperty("锁定截止时间")
+    private LocalDateTime lockedUntil;
+
+    @ApiModelProperty("状态(1:启用 0:禁用)")
     private Byte status;
 
-    @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
 
-    @ApiModelProperty("更新时间")
     private LocalDateTime updateTime;
-
-    @ApiModelProperty("逻辑删除：0-未删除，1-已删除")
-    private Byte deleted;
     @TableField(exist = false) // 表示不是数据库字段
     private List<String> roles;
 }

@@ -8,7 +8,7 @@ import org.springframework.stereotype.Service;
 
 /**
  * <p>
- * 系统角色表 服务实现类
+ * 角色表 服务实现类
  * </p>
  *
  * @author plotmax

@@ -26,7 +26,6 @@ public class UserRole implements Serializable {
 
     private static final long serialVersionUID = 1L;
 
-    @ApiModelProperty("主键ID")
     @TableId(value = "id", type = IdType.AUTO)
     private Long id;
 
@@ -36,6 +35,5 @@ public class UserRole implements Serializable {
     @ApiModelProperty("角色ID")
     private Long roleId;
 
-    @ApiModelProperty("创建时间")
     private LocalDateTime createTime;
 }

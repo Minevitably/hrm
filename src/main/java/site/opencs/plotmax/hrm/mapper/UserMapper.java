@@ -16,12 +16,12 @@ import java.util.List;
  */
 public interface UserMapper extends BaseMapper<User> {
 
-    @Select("SELECT * FROM sys_user WHERE username = #{username} AND deleted = 0")
+    @Select("SELECT * FROM sys_user WHERE username = #{username}")
     User selectByUsername(String username);
 
     @Select("SELECT r.role_code FROM sys_role r " +
             "JOIN sys_user_role ur ON r.id = ur.role_id " +
             "JOIN sys_user u ON ur.user_id = u.id " +
-            "WHERE u.username = #{username} AND r.deleted = 0 AND u.deleted = 0")
+            "WHERE u.username = #{username}")
     List<String> selectRoleCodesByUsername(String username);
 }
