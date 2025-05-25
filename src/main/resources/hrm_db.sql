@@ -3,6 +3,150 @@ CREATE DATABASE IF NOT EXISTS hrm_db CHARACTER SET utf8mb4 COLLATE utf8mb4_unico
 USE hrm_db;
 
 
+-- 部门表
+CREATE TABLE `sys_department` (
+                                  `id` bigint NOT NULL AUTO_INCREMENT,
+                                  `name` varchar(50) NOT NULL COMMENT '部门名称',
+                                  `parent_id` bigint DEFAULT NULL COMMENT '父部门ID',
+                                  `manager_id` bigint DEFAULT NULL COMMENT '部门经理ID',
+                                  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                                  `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                  PRIMARY KEY (`id`),
+                                  KEY `idx_parent_id` (`parent_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='部门表';
+
+-- 职位表
+CREATE TABLE `sys_position` (
+                                `id` bigint NOT NULL AUTO_INCREMENT,
+                                `name` varchar(50) NOT NULL COMMENT '职位名称',
+                                `level` int DEFAULT '1' COMMENT '职级',
+                                `base_salary_min` decimal(10,2) DEFAULT NULL COMMENT '最低基本工资',
+                                `base_salary_max` decimal(10,2) DEFAULT NULL COMMENT '最高基本工资',
+                                `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                                PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='职位表';
+
+-- 员工表
+CREATE TABLE `sys_employee` (
+                                `id` bigint NOT NULL AUTO_INCREMENT,
+                                `name` varchar(50) NOT NULL COMMENT '姓名',
+                                `gender` varchar(10) DEFAULT NULL COMMENT '性别',
+                                `birth_date` date DEFAULT NULL COMMENT '出生日期',
+                                `id_card_number` varchar(20) DEFAULT NULL COMMENT '身份证号',
+                                `department_id` bigint NOT NULL COMMENT '部门ID',
+                                `position_id` bigint NOT NULL COMMENT '职位ID',
+                                `hire_date` date NOT NULL COMMENT '入职日期',
+                                `leave_date` date DEFAULT NULL COMMENT '离职日期',
+                                `base_salary` decimal(10,2) NOT NULL COMMENT '基本工资',
+                                `performance_coefficient` decimal(3,2) DEFAULT '1.00' COMMENT '绩效系数',
+                                `education` varchar(50) DEFAULT NULL COMMENT '学历',
+                                `contact_phone` varchar(20) DEFAULT NULL COMMENT '联系电话',
+                                `emergency_contact` varchar(50) DEFAULT NULL COMMENT '紧急联系人',
+                                `emergency_phone` varchar(20) DEFAULT NULL COMMENT '紧急联系电话',
+                                `contract_file` varchar(255) DEFAULT NULL COMMENT '合同文件路径',
+                                `id_card_file` varchar(255) DEFAULT NULL COMMENT '身份证件路径',
+                                `status` tinyint DEFAULT '1' COMMENT '状态(1:在职 0:离职)',
+                                `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                                `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                                PRIMARY KEY (`id`),
+                                UNIQUE KEY `uk_id_card` (`id_card_number`),
+                                KEY `idx_department` (`department_id`),
+                                KEY `idx_position` (`position_id`),
+                                KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='员工表';
+
+-- 考勤记录表
+CREATE TABLE `sys_attendance` (
+                                  `id` bigint NOT NULL AUTO_INCREMENT,
+                                  `employee_id` bigint NOT NULL COMMENT '员工ID',
+                                  `attendance_date` date NOT NULL COMMENT '考勤日期',
+                                  `check_in_time` time DEFAULT NULL COMMENT '上班打卡时间',
+                                  `check_out_time` time DEFAULT NULL COMMENT '下班打卡时间',
+                                  `check_in_ip` varchar(50) DEFAULT NULL COMMENT '打卡IP',
+                                  `late_minutes` int DEFAULT '0' COMMENT '迟到分钟数',
+                                  `early_leave_minutes` int DEFAULT '0' COMMENT '早退分钟数',
+                                  `absence` tinyint DEFAULT '0' COMMENT '是否旷工(1:是 0:否)',
+                                  `status` varchar(20) DEFAULT 'PENDING' COMMENT '状态(PENDING/CONFIRMED/REJECTED)',
+                                  `confirmed_by` bigint DEFAULT NULL COMMENT '确认人ID',
+                                  `confirmed_time` datetime DEFAULT NULL COMMENT '确认时间',
+                                  `remark` varchar(255) DEFAULT NULL COMMENT '备注',
+                                  `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                                  PRIMARY KEY (`id`),
+                                  UNIQUE KEY `uk_employee_date` (`employee_id`,`attendance_date`),
+                                  KEY `idx_date` (`attendance_date`),
+                                  KEY `idx_status` (`status`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='考勤记录表';
+
+-- 薪资记录表
+CREATE TABLE `sys_salary` (
+                              `id` bigint NOT NULL AUTO_INCREMENT,
+                              `employee_id` bigint NOT NULL COMMENT '员工ID',
+                              `year_month` varchar(7) NOT NULL COMMENT '年月(YYYY-MM)',
+                              `base_salary` decimal(10,2) NOT NULL COMMENT '基本工资',
+                              `performance_salary` decimal(10,2) DEFAULT '0.00' COMMENT '绩效工资',
+                              `full_attendance_bonus` decimal(10,2) DEFAULT '0.00' COMMENT '全勤奖',
+                              `attendance_deduction` decimal(10,2) DEFAULT '0.00' COMMENT '考勤扣款',
+                              `insurance_deduction` decimal(10,2) DEFAULT '0.00' COMMENT '社保公积金扣款',
+                              `tax_deduction` decimal(10,2) DEFAULT '0.00' COMMENT '个税扣款',
+                              `net_salary` decimal(10,2) NOT NULL COMMENT '实发工资',
+                              `is_signed` tinyint DEFAULT '0' COMMENT '是否签收(1:是 0:否)',
+                              `sign_time` datetime DEFAULT NULL COMMENT '签收时间',
+                              `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                              `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                              PRIMARY KEY (`id`),
+                              UNIQUE KEY `uk_employee_month` (`employee_id`,`year_month`),
+                              KEY `idx_month` (`year_month`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='薪资记录表';
+
+-- 审批记录表
+CREATE TABLE `sys_approval` (
+                                `id` bigint NOT NULL AUTO_INCREMENT,
+                                `employee_id` bigint NOT NULL COMMENT '申请人ID',
+                                `type` varchar(20) NOT NULL COMMENT '类型(LEAVE/OVERTIME)',
+                                `start_time` datetime NOT NULL COMMENT '开始时间',
+                                `end_time` datetime NOT NULL COMMENT '结束时间',
+                                `duration` decimal(5,2) DEFAULT NULL COMMENT '时长(小时)',
+                                `reason` varchar(500) DEFAULT NULL COMMENT '事由',
+                                `status` varchar(20) DEFAULT 'PENDING' COMMENT '状态(PENDING/APPROVED/REJECTED)',
+                                `approver_id` bigint DEFAULT NULL COMMENT '审批人ID',
+                                `approve_time` datetime DEFAULT NULL COMMENT '审批时间',
+                                `approve_comment` varchar(500) DEFAULT NULL COMMENT '审批意见',
+                                `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                                PRIMARY KEY (`id`),
+                                KEY `idx_employee` (`employee_id`),
+                                KEY `idx_type_status` (`type`,`status`),
+                                KEY `idx_time_range` (`start_time`,`end_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='审批记录表';
+
+
+-- 系统配置表（新增）
+CREATE TABLE `sys_config` (
+                              `id` bigint NOT NULL AUTO_INCREMENT,
+                              `config_key` varchar(100) NOT NULL COMMENT '配置键',
+                              `config_value` varchar(500) NOT NULL COMMENT '配置值',
+                              `description` varchar(255) DEFAULT NULL COMMENT '配置描述',
+                              `create_time` datetime DEFAULT CURRENT_TIMESTAMP,
+                              `update_time` datetime DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+                              PRIMARY KEY (`id`),
+                              UNIQUE KEY `uk_config_key` (`config_key`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='系统配置表';
+
+-- 操作日志表（新增）
+CREATE TABLE `sys_operation_log` (
+                                     `id` bigint NOT NULL AUTO_INCREMENT,
+                                     `user_id` bigint DEFAULT NULL COMMENT '操作用户ID',
+                                     `operation` varchar(100) NOT NULL COMMENT '操作类型',
+                                     `method` varchar(200) DEFAULT NULL COMMENT '请求方法',
+                                     `params` text COMMENT '请求参数',
+                                     `ip` varchar(50) DEFAULT NULL COMMENT 'IP地址',
+                                     `status` tinyint DEFAULT NULL COMMENT '操作状态(1:成功 0:失败)',
+                                     `error_msg` varchar(2000) DEFAULT NULL COMMENT '错误消息',
+                                     `operation_time` datetime DEFAULT CURRENT_TIMESTAMP COMMENT '操作时间',
+                                     PRIMARY KEY (`id`),
+                                     KEY `idx_user_id` (`user_id`),
+                                     KEY `idx_operation_time` (`operation_time`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='操作日志表';
+
 -- 系统用户表
 CREATE TABLE `sys_user` (
                             `id` bigint NOT NULL AUTO_INCREMENT,
@@ -41,20 +185,44 @@ CREATE TABLE `sys_user_role` (
                                  PRIMARY KEY (`id`),
                                  UNIQUE KEY `uk_user_role` (`user_id`,`role_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COMMENT='用户角色关联表';
-#
-# -- 插入初始数据
-# INSERT INTO `sys_role` (`role_name`, `role_code`, `description`) VALUES
-#                                                                      ('管理员', 'ADMIN', '系统管理员'),
-#                                                                      ('普通用户', 'USER', '普通用户');
-#
-# INSERT INTO `sys_user` (`username`, `password`, `real_name`, `email`, `phone`, `status`) VALUES
-#                                                                                              ('admin', '$2a$10$bDW2hs7KSe6lZI1ITGEeTeHXWKojoWuxDag/F//m0srDTG/QpGIAi', '系统管理员', 'admin@example.com', '13800138000', 1),
-#                                                                                              ('user', '$2a$10$bDW2hs7KSe6lZI1ITGEeTeHXWKojoWuxDag/F//m0srDTG/QpGIAi', '普通用户', 'user@example.com', '13900139000', 1);
 
-# INSERT INTO `sys_user_role` (`user_id`, `role_id`) VALUES
-#                                                        (1, 1),  -- admin用户拥有管理员角色
-#                                                        (1, 2),  -- admin用户也拥有普通用户角色
-#                                                        (2, 2);  -- user用户拥有普通用户角色
+
+
+-- 初始化部门数据
+INSERT INTO `sys_department` (`id`, `name`, `parent_id`) VALUES
+                                                             (1, '总经办', NULL),
+                                                             (2, '技术部', NULL),
+                                                             (3, '市场部', NULL),
+                                                             (4, '行政部', NULL),
+                                                             (5, '设计部', NULL),
+                                                             (6, '开发组', 2),
+                                                             (7, '测试组', 2),
+                                                             (8, '推广组', 3),
+                                                             (9, '商务组', 3),
+                                                             (10, '人事组', 4),
+                                                             (11, '财务后勤组', 4);
+
+-- 初始化职位数据
+INSERT INTO `sys_position` (`id`, `name`, `level`, `base_salary_min`, `base_salary_max`) VALUES
+                                                                                             (1, '总经理', 1, 25000.00, 30000.00),
+                                                                                             (2, '技术总监', 2, 20000.00, 25000.00),
+                                                                                             (3, '高级工程师', 3, 15000.00, 20000.00),
+                                                                                             (4, '工程师', 4, 10000.00, 15000.00),
+                                                                                             (5, '市场经理', 2, 12000.00, 18000.00),
+                                                                                             (6, '人事经理', 2, 10000.00, 15000.00),
+                                                                                             (7, '财务主管', 3, 12000.00, 16000.00),
+                                                                                             (8, '设计师', 4, 8000.00, 15000.00);
+
+
+
+-- 初始化系统配置
+INSERT INTO `sys_config` (`config_key`, `config_value`, `description`) VALUES
+                                                                           ('attendance.late_deduction_per_min', '1', '迟到每分钟扣款金额(元)'),
+                                                                           ('attendance.late_deduction_over_30', '300', '迟到超过30分钟扣款金额(元)'),
+                                                                           ('attendance.early_leave_deduction', '2', '早退每分钟扣款金额(元)'),
+                                                                           ('attendance.absence_multiplier', '3', '旷工扣款倍数(日薪的倍数)'),
+                                                                           ('salary.performance_base_rate', '0.2', '绩效工资计算基数比例'),
+                                                                           ('salary.full_attendance_bonus', '500', '全勤奖金额(元)');
 
 -- 初始化角色数据
 INSERT INTO `sys_role` (`id`, `role_name`, `role_code`, `description`) VALUES

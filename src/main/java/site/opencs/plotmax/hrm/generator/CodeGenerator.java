@@ -20,7 +20,7 @@ public class CodeGenerator {
                             .pathInfo(Collections.singletonMap(OutputFile.xml, "D://code//java")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
-                    builder.addInclude("sys_user", "sys_role", "sys_user_role") // 设置需要生成的表名
+                    builder.addInclude() // 留空代表所有表
                             .addTablePrefix("sys_") // 设置过滤表前缀
                             .entityBuilder() // 实体类配置
                             .enableLombok() // 启用Lombok
