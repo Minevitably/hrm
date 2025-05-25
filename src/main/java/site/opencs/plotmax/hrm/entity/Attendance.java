@@ -1,6 +1,7 @@
 package site.opencs.plotmax.hrm.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -68,4 +69,11 @@ public class Attendance implements Serializable {
     private String remark;
 
     private LocalDateTime createTime;
+
+    // 关联字段(非数据库字段)
+    @TableField(exist = false)
+    private String employeeName;
+
+    @TableField(exist = false)
+    private String confirmedByName;
 }

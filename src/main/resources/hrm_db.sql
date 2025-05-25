@@ -214,6 +214,14 @@ VALUES (1001, 'LEAVE', 'PENDING', '2023-08-01 09:00:00', '2023-08-03 18:00:00', 
        (1002, 'OVERTIME', 'APPROVED', '2023-08-05 19:00:00', '2023-08-05 22:00:00', 3.0, '项目紧急上线', NOW()),
        (1003, 'LEAVE', 'REJECTED', '2023-08-10 13:00:00', '2023-08-10 17:00:00', 4.0, '家中有事', NOW());
 
+-- 初始化考勤测试数据
+INSERT INTO sys_attendance (employee_id, attendance_date, check_in_time, check_out_time,
+                            late_minutes, early_leave_minutes, absence, status, create_time)
+VALUES (1001, '2023-08-01', '09:00:00', '18:00:00', 0, 0, 0, 'NORMAL', NOW()),
+       (1001, '2023-08-02', '09:15:00', '17:45:00', 15, 15, 0, 'LATE', NOW()),
+       (1001, '2023-08-03', null, null, null, null, 1, 'ABSENCE', NOW()),
+       (1002, '2023-08-01', '08:45:00', '18:30:00', 0, 0, 0, 'NORMAL', NOW());
+
 -- 初始化部门数据
 INSERT INTO `sys_department` (`id`, `name`, `parent_id`)
 VALUES (1, '总经办', NULL),
