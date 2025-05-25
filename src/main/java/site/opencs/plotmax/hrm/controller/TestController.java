@@ -26,9 +26,9 @@ public class TestController {
     }
 
     @GetMapping("/user")
-    @PreAuthorize("hasRole('USER')")
+    @PreAuthorize("hasAnyRole('EMPLOYEE', 'GM', 'ADMIN')")
     public String userEndpoint() {
-        return "这是一个用户端点，只有USER角色可以访问";
+        return "这是一个用户端点，只有EMPLOYEE, GM, ADMIN角色可以访问";
     }
 
     @GetMapping("/admin")
