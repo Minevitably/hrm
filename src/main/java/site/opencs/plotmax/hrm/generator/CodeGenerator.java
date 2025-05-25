@@ -17,12 +17,15 @@ public class CodeGenerator {
                 })
                 .packageConfig(builder -> {
                     builder.parent("site.opencs.plotmax.hrm") // 设置父包名
-                            .moduleName("system") // 设置父包模块名
                             .pathInfo(Collections.singletonMap(OutputFile.xml, "D://code//java")); // 设置mapperXml生成路径
                 })
                 .strategyConfig(builder -> {
                     builder.addInclude("sys_user", "sys_role", "sys_user_role") // 设置需要生成的表名
-                            .addTablePrefix("sys_"); // 设置过滤表前缀
+                            .addTablePrefix("sys_") // 设置过滤表前缀
+                            .entityBuilder() // 实体类配置
+                            .enableLombok() // 启用Lombok
+                            .controllerBuilder() // 控制器配置
+                            .enableRestStyle(); // 启用RestController
                 })
                 .templateEngine(new FreemarkerTemplateEngine()) // 使用Freemarker引擎模板，默认的是Velocity引擎模板
                 .execute();

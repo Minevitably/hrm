@@ -12,7 +12,7 @@ import java.util.List;
  * </p>
  *
  * @author plotmax
- * @since 2025-05-23
+ * @since 2025-05-25
  */
 public interface UserMapper extends BaseMapper<User> {
 

@@ -1,7 +1,7 @@
 package site.opencs.plotmax.hrm.controller;
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RestController;
 
 /**
  * <p>
@@ -9,10 +9,10 @@ import org.springframework.stereotype.Controller;
  * </p>
  *
  * @author plotmax
- * @since 2025-05-23
+ * @since 2025-05-25
  */
-@Controller
-@RequestMapping("/api/user")
+@RestController
+@RequestMapping("/user")
 public class UserController {
 
 }
