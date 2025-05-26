@@ -1,6 +1,7 @@
 package site.opencs.plotmax.hrm.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import java.io.Serializable;
@@ -34,6 +35,7 @@ public class Salary implements Serializable {
     private Long employeeId;
 
     @ApiModelProperty("年月(YYYY-MM)")
+    @TableField("`year_month`")
     private String yearMonth;
 
     @ApiModelProperty("基本工资")
@@ -66,4 +68,8 @@ public class Salary implements Serializable {
     private LocalDateTime createTime;
 
     private LocalDateTime updateTime;
+
+    // 关联字段(非数据库字段)
+    @TableField(exist = false)
+    private String employeeName;
 }
